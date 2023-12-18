@@ -8,6 +8,7 @@ import 'package:flutter_application_todoproject/shared/component/textform.dart';
 import 'package:flutter_application_todoproject/shared/constant/constatnt.dart';
 import 'package:flutter_application_todoproject/shared/localdatabase/localdatabase.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,46 +46,86 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: colors[currentIndex],
         onPressed: () {
           if (isButtonSheetShow) {
-            isButtonSheetShow = false;
-            Navigator.pop(context);
-            setState(() {
-              floatingActionbottonIcon = Icon(Icons.edit);
-            });
+            if (formKey.currentState!.validate()) {
+              isButtonSheetShow = false;
+              Navigator.pop(context);
+              setState(() {
+                floatingActionbottonIcon = Icon(Icons.edit);
+              });
+            }
           } else {
             scaffoldKey.currentState!.showBottomSheet((context) => Container(
                   width: double.infinity,
                   color: Colors.grey[100],
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      defaultFormField(
-                          controller: titleController,
-                          type: TextInputType.text,
-                          prefix: Icons.title,
-                          label: 'Task title',
-                          hintText: "Enter task title",
-                          validate: (String value) {
-                            if (value.isEmpty) {
-                              return 'Title cannot be empty';
-                            }
-                            return null;
-                          }),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      defaultFormField(
-                          controller: timeController,
-                          type: TextInputType.datetime,
-                          prefix: Icons.watch_later_outlined,
-                          label: "Task Time",
-                          hintText: "Enter Task Time",
-                          validate: (String value) {
-                            if (value.isEmpty) {
-                              return 'Time cannot be empty';
-                            }
-                            return null;
-                          })
-                    ],
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        defaultFormField(
+                            controller: titleController,
+                            type: TextInputType.text,
+                            prefix: Icons.title,
+                            label: 'Task title',
+                            hintText: "Enter task title",
+                            validate: (String value) {
+                              if (value.isEmpty) {
+                                return 'Title cannot be empty';
+                              }
+                              return null;
+                            }),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        defaultFormField(
+                            controller: timeController,
+                            type: TextInputType.datetime,
+                            prefix: Icons.watch_later_outlined,
+                            label: "Task Time",
+                            hintText: "Enter Task Time",
+                            validate: (String value) {
+                              if (value.isEmpty) {
+                                return 'Time cannot be empty';
+                              }
+                              return null;
+                            },
+                            onTap: () {
+                              showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.now())
+                                  .then((value) {
+                                timeController.text =
+                                    value!.format(context).toString();
+                              });
+                            }),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        defaultFormField(
+                            controller: dateController,
+                            type: TextInputType.datetime,
+                            prefix: Icons.date_range_outlined,
+                            label: "Task Date",
+                            hintText: "Enter Task Date",
+                            validate: (String value) {
+                              if (value.isEmpty) {
+                                return 'Date cannot be empty';
+                              }
+                              return null;
+                            },
+                            onTap: () {
+                              showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime.parse("2027-01-14"))
+                                  .then((value) {
+                                dateController.text =
+                                    DateFormat.yMMMd().format(value!);
+                              });
+                            }),
+                      ],
+                    ),
                   ),
                 ));
             isButtonSheetShow = true;

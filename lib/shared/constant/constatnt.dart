@@ -6,10 +6,12 @@ import 'package:sqflite/sqflite.dart';
 
 var titleController = TextEditingController();
 var timeController = TextEditingController();
+var dateController = TextEditingController();
 int currentIndex = 0;
 late Database database;
 bool isButtonSheetShow = false;
 GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+GlobalKey<FormState> formKey = GlobalKey();
 Icon floatingActionbottonIcon = Icon(Icons.edit);
 List<Widget> screens = [
   const NewTasks(),
