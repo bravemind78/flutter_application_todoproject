@@ -46,13 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: colors[currentIndex],
         onPressed: () {
           if (isButtonSheetShow) {
-            if (formKey.currentState!.validate()) {
-              isButtonSheetShow = false;
-              Navigator.pop(context);
-              setState(() {
-                floatingActionbottonIcon = Icon(Icons.edit);
-              });
-            }
+            insertDataBase(
+                    tite: titleController.text,
+                    date: dateController.text,
+                    time: timeController.text)
+                .then((value) {
+              if (formKey.currentState!.validate()) {
+                isButtonSheetShow = false;
+                Navigator.pop(context);
+                setState(() {
+                  floatingActionbottonIcon = Icon(Icons.edit);
+                });
+              }
+            });
           } else {
             scaffoldKey.currentState!.showBottomSheet((context) => Container(
                   width: double.infinity,

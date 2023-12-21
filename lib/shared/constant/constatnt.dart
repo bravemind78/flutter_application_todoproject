@@ -13,6 +13,7 @@ bool isButtonSheetShow = false;
 GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 GlobalKey<FormState> formKey = GlobalKey();
 Icon floatingActionbottonIcon = Icon(Icons.edit);
+////////////////////List Definition////////////////////////
 List<Widget> screens = [
   const NewTasks(),
   const DoneTasks(),
@@ -25,3 +26,5 @@ List<Icon> icons = [
   const Icon(Icons.archive_outlined)
 ];
 List<Color> colors = [Colors.blue, Colors.green, Colors.red];
+List<Map> tasks = [];
+///////////////////////////////////////////////////////////////////////
